@@ -4,6 +4,9 @@ FROM python:3.8-slim
 # Set the working directory in the container
 WORKDIR /usr/src/app
 
+# Install bash
+RUN apt-get update && apt-get install -y bash
+
 # Copy the current directory contents into the container at /usr/src/app
 COPY . .
 
