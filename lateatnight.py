@@ -34,7 +34,7 @@ def list_packages():
     <div style='border:1px solid black; margin-bottom:20px; padding:10px;'>
         {installed_packages_list}
     </div>
-    <h2>Actively Loaded Modules</h2>
+    <h2>Actively Loaded Modules - Maybe</h2>
     <div style='border:1px solid black; margin-bottom:20px; padding:10px;'>
         {loaded_modules_list}
     </div>
