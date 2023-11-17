@@ -1,27 +1,25 @@
 from flask import Flask
 import sys
 import pkg_resources
-from PIL import Image, ImageDraw
+from PIL import Image
 
 app = Flask(__name__)
 
-# Simple use of Pillow to ensure it's loaded
-def create_dummy_image():
-    image = Image.new('RGB', (100, 100), color = (73, 109, 137))
-    d = ImageDraw.Draw(image)
-    d.text((10, 10), "Hello", fill=(255, 255, 0))
-    return image
-
-dummy_image = create_dummy_image()
+# Dummy operation with Pillow to ensure it's loaded
+dummy_image = Image.new('RGB', (10, 10), color='white')
 
 @app.route('/')
 def list_packages():
+    # Explicit reference to Flask and Pillow
+    flask_ref = Flask
+    pillow_ref = Image
+
     # List of all installed packages
     installed_packages = {pkg.key for pkg in pkg_resources.working_set}
     installed_packages_list = '<br>'.join(sorted(installed_packages))
 
-    # List of all actively loaded modules
-    loaded_modules = set(sys.modules) & set(globals())
+    # List of actively loaded modules (attempting a more direct approach)
+    loaded_modules = {pkg.key for pkg in pkg_resources.working_set if pkg.key in sys.modules}
     loaded_modules_list = '<br>'.join(sorted(loaded_modules))
 
     # Calculate the delta: Packages installed but not actively loaded
@@ -34,7 +32,7 @@ def list_packages():
     <div style='border:1px solid black; margin-bottom:20px; padding:10px;'>
         {installed_packages_list}
     </div>
-    <h2>Actively Loaded Modules - Maybe</h2>
+    <h2>Actively Loaded Modules</h2>
     <div style='border:1px solid black; margin-bottom:20px; padding:10px;'>
         {loaded_modules_list}
     </div>
