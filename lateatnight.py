@@ -1,8 +1,18 @@
 from flask import Flask
 import sys
 import pkg_resources
+from PIL import Image, ImageDraw
 
 app = Flask(__name__)
+
+# Simple use of Pillow to ensure it's loaded
+def create_dummy_image():
+    image = Image.new('RGB', (100, 100), color = (73, 109, 137))
+    d = ImageDraw.Draw(image)
+    d.text((10, 10), "Hello", fill=(255, 255, 0))
+    return image
+
+dummy_image = create_dummy_image()
 
 @app.route('/')
 def list_packages():
