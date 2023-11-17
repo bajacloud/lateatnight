@@ -1,14 +1,40 @@
-# Sample Python Application
-# This script uses Flask to create a basic web server and Pillow for image processing (not actually used but imported)
-
 from flask import Flask
-from PIL import Image
+import sys
+import pkg_resources
 
 app = Flask(__name__)
 
 @app.route('/')
-def home():
-    return "Hello, World!"
+def list_packages():
+    # List of all installed packages
+    installed_packages = {pkg.key for pkg in pkg_resources.working_set}
+    installed_packages_list = '<br>'.join(sorted(installed_packages))
+
+    # List of all actively loaded modules
+    loaded_modules = set(sys.modules) & set(globals())
+    loaded_modules_list = '<br>'.join(sorted(loaded_modules))
+
+    # Calculate the delta: Packages installed but not actively loaded
+    unused_packages = installed_packages - loaded_modules
+    unused_packages_list = '<br>'.join(sorted(unused_packages))
+
+    # HTML to display all three lists
+    html = f"""
+    <h2>Installed Packages</h2>
+    <div style='border:1px solid black; margin-bottom:20px; padding:10px;'>
+        {installed_packages_list}
+    </div>
+    <h2>Actively Loaded Modules</h2>
+    <div style='border:1px solid black; margin-bottom:20px; padding:10px;'>
+        {loaded_modules_list}
+    </div>
+    <h2>Unused Packages (Installed but Not Loaded)</h2>
+    <div style='border:1px solid black; margin-bottom:20px; padding:10px;'>
+        {unused_packages_list}
+    </div>
+    """
+
+    return html
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=5000, debug=True)
