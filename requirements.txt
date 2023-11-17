@@ -1,0 +1,7 @@
+# requirements.txt
+flask==2.0.1       # Used by the application
+werkzeug==2.0      # Required for Flask
+Pillow==8.1.0      # Vulnerable version, used by the application
+requests==2.25.1   # Not used by the application
+numpy==1.19.5      # Not used by the application
+lxml==4.6.3        # Vulnerable package, not used by the application
